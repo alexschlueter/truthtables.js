@@ -625,7 +625,7 @@ var truthtables = {
             }
         }
         rec_func(0, var_values)
-        result["rows"] = row + 1
+        result["rows"] = row
         return result
     }
 }

@@ -54,22 +54,22 @@ where the first element of each row would be the value of A, the second elment w
 </table>
 
 <script src="truthtables.js"></script>
+<!-- jQuery not required for truthtables.js, just for this example -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 <script>
-$("#b1").click(function () {
-    table_data = truthtables.generate($("#input").val());
-    console.log(table_data)
-    $("#table tbody").append("<tr>" + $.map(table_data.vars, function (n) {
-        return "<td>" + n + "</td>"
-    }) + "</tr>")
-    $("#table tr td:last").after("<td>" + $("#input").val() + "</td>")
-    for (var i = 0; i < table_data.rows; ++i) {
-        $("#table tbody").append("<tr>" + $.map(table_data[i], function (n) {
+    $("#b1").click(function () {
+        table_data = truthtables.generate($("#input").val());
+        $("#table tbody").append("<tr>" + $.map(table_data.vars, function (n) {
             return "<td>" + n + "</td>"
-        }))
-    }
-})
-}
+        }) + "</tr>")
+        $("#table tr td:last").after("<td>" + $("#input").val() + "</td>")
+        for (var i = 0; i < table_data.rows; ++i) {
+            $("#table tbody").append("<tr>" + $.map(table_data[i], function (n) {
+                return "<td>" + n + "</td>"
+            }))
+        }
+    })
 </script>
 </body>
 </html>
