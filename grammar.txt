@@ -1,0 +1,37 @@
+/*
+ * Logical expression grammar for truthtables.js
+ * https://github.com/alexschlueter/truthtables.js
+ *
+ * Used as input for PEG.js for automatical parser generation
+ * http://pegjs.majda.cz/
+ */
+
+start
+  = equivalence
+
+equivalence
+  = left:implication "<=>" right:equivalence { return {vars:left.vars.concat(right.vars), eval:function(vars) { return left.eval(vars) === right.eval(vars) }} }
+  / implication
+
+implication
+  = left:or "=>" right:implication { return {vars:left.vars.concat(right.vars), eval:function(vars) { return ! left.eval(vars) || right.eval(vars) }} }
+  / or
+
+or
+  = left:and "||" right:or { return {vars:left.vars.concat(right.vars), eval:function(vars) { return left.eval(vars) || right.eval(vars) }} }
+  / and
+
+and
+  = left:negation "&&" right:and { return {vars:left.vars.concat(right.vars), eval:function(vars) { return left.eval(vars) && right.eval(vars) }} }
+  / negation
+
+negation
+  = "!" primary:primary { return {vars:primary.vars, eval:function(vars) { return ! primary.eval(vars) }} }
+  / primary
+
+primary
+  = variable
+  / "(" equivalence:equivalence ")" { return {vars: equivalence.vars, eval: function(vars) { return equivalence.eval(vars) }} }
+
+variable "variable"
+  = letters:[a-zA-Z]+ { return {vars: letters, eval:function(vars) { return vars[letters] }} }
